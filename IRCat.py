@@ -86,8 +86,8 @@ class IRCat:
         return requests.get("https://catfact.ninja/fact").json()['fact'] 
 
     def Leave(self):
-        self.SendMessage(CHANNELS[0],"Ok i'm leaving.")
-        self.SendMessage(CHANNELS[0], "!leave %s" % CHANNELS[0])
+        self.SendMessage(self.CHANNELS[0],"Ok i'm leaving.")
+        self.SendMessage(self.CHANNELS[0], "!leave %s" % self.CHANNELS[0])
 
 if __name__ == '__main__':
     print("This is used only as import!")
