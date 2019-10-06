@@ -12,7 +12,7 @@ class IRCat:
                 "!usage       - see this again///"
                 "!b64e string - encodes string using base64///"
                 "!b64d string - decodes string using base64///"
-                "!code code   - gives more info about status code///"
+                "!code code   - gives more info about status code"
             )
 
     def __init__(self,ip,port,nick,ident,realname,channels):
@@ -28,8 +28,7 @@ class IRCat:
     def SendMessage(self,recipient,message):
         """Sends message to user/channel (use /// as newline)"""
         for m in message.split("///"):
-            print(m)
-            self.S.send(bytes("PRIVMSG %s %s \r\n" % (recipient, m), "UTF-8"))
+            self.S.send(bytes("PRIVMSG %s :%s \r\n" % (recipient, m), "UTF-8"))
 
     def Pong(self,extra):
         """Sends pong"""
@@ -41,12 +40,12 @@ class IRCat:
     def PrintUsage(self,channel):
         self.SendMessage(channel,self.USAGE)
     #=== Commands ===#
-    def Base64Decode(self,base64):
+    def Base64Decode(self,cypher):
         """Decodes base64 to plaintext"""
         decoded = ""
         try:
-            decoded = base64.b64decode(base64)
-        except TypeError:
+            decoded = base64.b64decode(bytes(cypher,"UTF-8")).decode("UTF-8")
+        except Exception:
             decoded = "*Scratches you*, that is not a valid base64"
         return decoded
     
@@ -56,7 +55,10 @@ class IRCat:
         if len(text) < 2:
             decoded = "*Scratches you*, give me string por favor"
         else:
-            decoded = base64.b64Encode(text)
+            try:
+                decoded = base64.b64encode(bytes(text,"UTF-8")).decode("UTF-8")
+            except UnicodeEncodeError:
+                decoded = "*Bites you*, Is that even a language?"
         return decoded
     
     def StatusCodeInfo(self,code):
@@ -68,7 +70,7 @@ class IRCat:
                 builder = ""
                 res = requests.get("https://httpstatuses.com/%s" % code)
                 bs = BeautifulSoup(res.text,"lxml")
-                builder += bs.select("h1").getText() + "///"
+                builder += bs.select("h1")[0].getText() + "///"
                 builder += bs.select("p")[1].getText() + "///"
                 builder += "https://http.cat/%s\n" % code
                 return builder

@@ -47,15 +47,15 @@ while 1:
             if(line[3]==":!usage"):
                 BOT.PrintUsage(CHANNELS[0])
             elif(line[3]==":!b64e"):
-                s = " ".join(line[3:])
+                s = " ".join(line[4:])
                 s.lstrip(":")
-                BOT.SendMessage(CHANNELS[0],"Here you go %s///" % sender + BOT.Base64Encode(s)) # todo parse for multichannels
+                BOT.SendMessage(CHANNELS[0],"Here you go %s///%s" % (sender,BOT.Base64Encode(s))) # todo parse for multichannels
             elif(line[3]==":!b64d"):
-                s = (line[3]).lstrip(":")
-                BOT.SendMessage(CHANNELS[0],"Here you go %s" % sender + BOT.Base64Decode(s))
+                s = line[4].lstrip(":")
+                BOT.SendMessage(CHANNELS[0],"Here you go %s///%s" % (sender, BOT.Base64Decode(s)))
             elif(line[3]==":!code"):
-                s = line[3].lstrip(":")
-                BOT.SendMessage(CHANNELS[0],"Here you go %s" % sender + BOT.StatusCodeInfo(s))
+                s = line[4].lstrip(":")
+                BOT.SendMessage(CHANNELS[0],"Here you go %s///%s" % (sender, BOT.StatusCodeInfo(s)))
 
         for index, i in enumerate(line):
             print(line[index],end="")
