@@ -22,7 +22,8 @@ PORT = 6667
 NICK = "IRCat"
 IDENT = "IRCat"
 REALNAME = "Meow"
-CHANNELS = ["#triglex"]
+CHANNELS = ["#python"]
+ADMINS = ["kelj0"]
 
 BOT = IRCat(HOST,PORT,NICK,IDENT,REALNAME,CHANNELS)
 readbuffer = ""
@@ -44,18 +45,26 @@ while 1:
                     break
                 else:
                     sender += char 
-            if(line[3]==":!usage"):
+            if(line[3] == ":!usage"):
                 BOT.PrintUsage(CHANNELS[0])
-            elif(line[3]==":!b64e"):
+            elif(line[3] == ":!b64e"):
                 s = " ".join(line[4:])
                 s.lstrip(":")
                 BOT.SendMessage(CHANNELS[0],"Here you go %s///%s" % (sender,BOT.Base64Encode(s))) # todo parse for multichannels
-            elif(line[3]==":!b64d"):
+            elif(line[3] == ":!b64d"):
                 s = line[4].lstrip(":")
+                print(s)
                 BOT.SendMessage(CHANNELS[0],"Here you go %s///%s" % (sender, BOT.Base64Decode(s)))
-            elif(line[3]==":!code"):
+            elif(line[3] == ":!code"):
                 s = line[4].lstrip(":")
                 BOT.SendMessage(CHANNELS[0],"Here you go %s///%s" % (sender, BOT.StatusCodeInfo(s)))
+            elif(line[3] == ":!fact"):
+                BOT.SendMessage(CHANNELS[0], BOT.RandomFact())
+            elif(line[3] == ":!begone"):
+                if(sender not in ADMINS):
+                    BOT.SendMessage(CHANNELS[0], "Pathethic..")
+                else:
+                    BOT.Leave()
 
         for index, i in enumerate(line):
             print(line[index],end="")

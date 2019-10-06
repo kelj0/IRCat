@@ -12,7 +12,9 @@ class IRCat:
                 "!usage       - see this again///"
                 "!b64e string - encodes string using base64///"
                 "!b64d string - decodes string using base64///"
-                "!code code   - gives more info about status code"
+                "!code code   - gives more info about status code///"
+                "!fact        - gives you a random cat fact///"
+                "!begone      - leaves room(but listens you only if you are admin)"
             )
 
     def __init__(self,ip,port,nick,ident,realname,channels):
@@ -43,10 +45,13 @@ class IRCat:
     def Base64Decode(self,cypher):
         """Decodes base64 to plaintext"""
         decoded = ""
-        try:
-            decoded = base64.b64decode(bytes(cypher,"UTF-8")).decode("UTF-8")
-        except Exception:
-            decoded = "*Scratches you*, that is not a valid base64"
+        if len(cypher) < 2:
+            decoded = "*Scratches you*, give me string por favor"
+        else:
+            try:
+                decoded = base64.b64decode(bytes(cypher,"UTF-8")).decode("UTF-8")
+            except Exception:
+                decoded = "*Scratches you*, that is not a valid base64"
         return decoded
     
     def Base64Encode(self,text):
@@ -64,7 +69,7 @@ class IRCat:
     def StatusCodeInfo(self,code):
         """Returns more info about status code"""
         try:
-            if(100 > int(code) > 600):
+            if(code < 100 and code > 599):
                 return "*Knocks down your glass*, Give me normal status code"
             else:
                 builder = ""
@@ -76,6 +81,13 @@ class IRCat:
                 return builder
         except ValueError:
             return "*Spills milk*, You didn't even give me number"
+        
+    def RandomFact(self):
+        return requests.get("https://catfact.ninja/fact").json()['fact'] 
+
+    def Leave(self):
+        self.SendMessage(CHANNELS[0],"Ok i'm leaving.")
+        self.SendMessage(CHANNELS[0], "!leave %s" % CHANNELS[0])
 
 if __name__ == '__main__':
     print("This is used only as import!")
