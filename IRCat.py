@@ -69,7 +69,7 @@ class IRCat:
     def StatusCodeInfo(self,code):
         """Returns more info about status code"""
         try:
-            if(code < 100 and code > 599):
+            if(int(code) < 100 or int(code) > 599):
                 return "*Knocks down your glass*, Give me normal status code"
             else:
                 builder = ""
