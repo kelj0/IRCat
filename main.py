@@ -12,7 +12,7 @@ PORT = 6667
 NICK = "IRCat"
 IDENT = "IRCat"
 REALNAME = "Meow"
-CHANNELS = ["#python"]
+CHANNELS = ["#triglex"]
 ADMINS = ["kelj0"]
 
 BOT = IRCat(HOST,PORT,NICK,IDENT,REALNAME,CHANNELS)

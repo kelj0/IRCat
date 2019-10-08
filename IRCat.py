@@ -3,6 +3,7 @@ import string
 import base64
 import requests
 import time
+import sys
 from bs4 import BeautifulSoup
 
 class IRCat:
@@ -87,8 +88,8 @@ class IRCat:
 
     def Leave(self):
         self.SendMessage(self.CHANNELS[0],"Ok i'm leaving.")
-        self.SendMessage(self.CHANNELS[0], "/leave %s" % self.CHANNELS[0])
-
+        self.S.send(bytes("QUIT \r\n","UTF-8"))
+        sys.exit(0)
 if __name__ == '__main__':
     print("This is used only as import!")
 
